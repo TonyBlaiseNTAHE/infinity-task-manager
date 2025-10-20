@@ -3,7 +3,8 @@ import express from 'express'
 import cors from 'cors'
 import path from 'path'
 import connectDB from './config/database.js';
-import authRoutes from './routes/authRoutes.js'
+import authRoutes from './routes/authRoutes.js';
+import employeeRoutes from './routes/employeeRoutes.js';
 
 
 
@@ -30,7 +31,7 @@ app.use(express.json());
 
 // Routes
    app.use("/api/auth", authRoutes);
-//    app.use("/api/users", userRoutes);
+   app.use("/api/users", employeeRoutes);
 //    app.use("/api/tasks", taskRoutes);
 //    app.use("/api/reports", reportRoutes);
 
