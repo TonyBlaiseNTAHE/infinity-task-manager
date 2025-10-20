@@ -73,7 +73,7 @@ export const loginUser = async(req, res) => {
         }
         // Return user data with JWT
         res.json({
-            _id: user._id,
+            _id: employee._id,
             name: employee.name,
             email: employee.email,
             role: employee.role,
@@ -89,9 +89,53 @@ export const loginUser = async(req, res) => {
 // @desc Get user profile
 // @route GET /api/auth/profile
 // @access Private (Requires JWT)
-export const getUserProfile = async (req, res) => {};
+export const getUserProfile = async (req, res) => {
+    try {
+        const employee = await Employee.findById(req.employee.id).select("-password");
+    if (!employee) {
+        return res.status(404).json({message: "User not found"});
+
+    }
+    res.json(employee);
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message});
+
+    }
+};
 
 // @desc update user profile
 // @route PUT /api/auth/profile
 // @access Private (Requires JWT)
-export const updateUserProfile = async (req, res) => {};
+export const updateUserProfile = async (req, res) => {
+    try {
+        const employee = await Employee.findById(req.employee.id);
+
+        if(!employee){
+            return res.status(404).json({message: "User not found"});
+        }
+
+        employee.name = req.body.name || employee.name;
+        employee.email = req.body.email || employee.email;
+
+        if (req.body.password){
+            const salt = await bcrypt.genSalt(10);
+            employee.password = await bcrypt.hash(req.body.password, salt);
+        }
+
+        const updateEmployee = await employee.save();
+
+        res.json({
+            _id: updateEmployee._id,
+            name: updateEmployee.name,
+            email: updateEmployee.email,
+            role: updateEmployee.role,
+            token: generateToken(updateUserProfile._id),
+        })
+
+        
+    } catch (error) {
+        res.status(500).json({
+            message: "Server error", error: error.message
+        })
+    }
+};
