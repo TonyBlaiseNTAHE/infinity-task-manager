@@ -1,8 +1,7 @@
 const express = require("express");
+const { registerEmployee, loginUser, getUserProfile, updateUserProfile } = require("../controllers/authContoller");
 
 const router = express.Router();
-
-import { registerEmployee, loginUser, getUserProfile, updateUserProfile} from '../controllers/authContoller.js';
 // Auth
 router.post("/register", registerEmployee);
 router.post("/login", loginUser);
