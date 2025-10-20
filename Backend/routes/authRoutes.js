@@ -1,11 +1,19 @@
-const express = require("express");
-const { registerEmployee, loginUser, getUserProfile, updateUserProfile } = require("../controllers/authContoller");
+import  express from "express";
 
-const router = express.Router();
+import {protect} from '../middlewares/authMiddleware.js'
+import {
+  registerEmployee,
+  loginUser,
+  getUserProfile,
+  updateUserProfile
+} from "../controllers/authController.js";
+
+
+ const router = express.Router();
 // Auth
 router.post("/register", registerEmployee);
 router.post("/login", loginUser);
 router.get("/profile", protect, getUserProfile);
 router.put("/profile", protect, updateUserProfile);
 
-module.exports = router;
+export default router;

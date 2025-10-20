@@ -1,9 +1,10 @@
-// import dotenv from 'dotenv';
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const path = require("path");
-const connectDB = require("./config/database");
+import dotenv from 'dotenv';
+import express from 'express'
+import cors from 'cors'
+import path from 'path'
+import connectDB from './config/database.js';
+import authRoutes from './routes/authRoutes.js'
+
 
 
 const app = express();
@@ -17,6 +18,8 @@ app.use(
     })
 );
 
+dotenv.config();
+
 //connect Db
 connectDB();
 
@@ -26,10 +29,10 @@ app.use(express.json());
 
 
 // Routes
-//    app.use("api/auth", authRoutes);
-//    app.use("api/users", userRoutes);
-//    app.use("api/tasks", taskRoutes);
-//    app.use("api/reports", reportRoutes);
+   app.use("/api/auth", authRoutes);
+//    app.use("/api/users", userRoutes);
+//    app.use("/api/tasks", taskRoutes);
+//    app.use("/api/reports", reportRoutes);
 
 
    const PORT = process.env.PORT || 5000;
