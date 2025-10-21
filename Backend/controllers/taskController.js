@@ -199,7 +199,39 @@ import Task from '../models/Task.js';
   */
  export const updateTaskChecklist = async (req, res) => {
     try {
+        const { todoChecklist} = req.body;
+        const task = await Task.findById(req.params.id);
+
+        if(!task) return res.status(404).json({ message: "Task not found"});
+
+        if (!task.assignedTo.includes(req.employee._id) && req.employee.role !== "admin"){
+            return res.status(403).json({ message: "Not authorized to update checklist"});
+        }
+
+        /** Replace with updated checklist */
+        task.todoChecklist = todoChecklist;
+        /** Auto-update progress based on checklist completion */
+        const completedCount = task.todoChecklist.filter(
+            (item) => item.completed
+        ).length;
+        const totalItems = task.todoChecklist.length;
+        task.progress = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
+
+        /** Auto-mark task as completed if all items are checked */
+        if (task.progress === 100){
+            task.status = "Completed";
+        } else if (task.progress > 0){
+            task.status = "In Progress";
+        } else {
+            task.status = "Pending";
+        }
+        await task.save();
+        const updatedTask = await Task.findById(req.params.id).populate(
+            "assignedTo",
+            "name email profileImageUrl"
+        )
         
+        res.json({ message: "Task checklist updated", task: updatedTask});
     } catch (error) {
         res.status(500).json({message: "Server Error", error: error.message});
     }
