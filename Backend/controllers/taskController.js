@@ -17,7 +17,7 @@ import Task from '../models/Task.js';
   * @route: Get /api/tasks/:id
   * @access: Private
   */
- export const getTaskById = async (req, res){
+ export const getTaskById = async (req, res) => {
     try {
         
     } catch (error) {
@@ -31,6 +31,23 @@ import Task from '../models/Task.js';
   */
  export const createTask = async (req, res) => {
     try {
+        const { title, description, priority, dueDate, assignedTo, attachments, todoChecklist} = req.body;
+
+        if(!Array.isArray(assignedTo)){
+            return res.status(400).json({message: "assignedTo must be an array of Employee IDs ."});
+        }
+
+        const task = await Task.create({
+            title,
+            description,
+            priority,
+            dueDate,
+            assignedTo,
+            createdBy: req.employee._id,
+            todoChecklist,
+            attachments,
+        })
+        res.status(201).json({ message: "Task created successfully", task});
         
     } catch (error) {
         res.status(500).json({message: "Server Error", error: error.message});

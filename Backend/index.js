@@ -5,6 +5,7 @@ import path from 'path'
 import connectDB from './config/database.js';
 import authRoutes from './routes/authRoutes.js';
 import employeeRoutes from './routes/employeeRoutes.js';
+import taskRoutes from './routes/taskRoutes.js';
 
 
 
@@ -32,7 +33,7 @@ app.use(express.json());
 // Routes
    app.use("/api/auth", authRoutes);
    app.use("/api/employees", employeeRoutes);
-//    app.use("/api/tasks", taskRoutes);
+   app.use("/api/tasks", taskRoutes);
 //    app.use("/api/reports", reportRoutes);
 
 

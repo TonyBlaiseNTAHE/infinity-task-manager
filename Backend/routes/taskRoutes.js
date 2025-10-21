@@ -21,7 +21,7 @@ router.post("/", protect, adminOnly, createTask);
 /* update task datails */
 router.post("/:id", protect, updateTask); 
 /* Delete a task (Admin only) */
-router.delete(":/id", protect, adminOnly, deleteTask); 
+router.delete("/:id", protect, adminOnly, deleteTask); 
 /* Update task status */
 router.put("/:id/status", protect, updateTaskStatus); 
 /* Update task checklist */
