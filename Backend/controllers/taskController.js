@@ -4,7 +4,7 @@ import Task from '../models/Task.js';
   * @route: Get /api/tasks/
   * @access: Private
   */
- const getTasks = async (req, res) => {
+ export const getTasks = async (req, res) => {
     try {
         
     } catch (error) {
@@ -17,7 +17,7 @@ import Task from '../models/Task.js';
   * @route: Get /api/tasks/:id
   * @access: Private
   */
- const getTaskById = async (req, res){
+ export const getTaskById = async (req, res){
     try {
         
     } catch (error) {
@@ -29,7 +29,7 @@ import Task from '../models/Task.js';
   * @route: POST /api/tasks/
   * @access: Private
   */
- const createTask = async (req, res) => {
+ export const createTask = async (req, res) => {
     try {
         
     } catch (error) {
@@ -41,7 +41,7 @@ import Task from '../models/Task.js';
   * @route: PUT /api/tasks/:id
   * @access: Private
   */
- const updateTask = async (req, res) => {
+ export const updateTask = async (req, res) => {
     try {
         
     } catch (error) {
@@ -53,7 +53,7 @@ import Task from '../models/Task.js';
   * @route: DELETE /api/tasks/:id
   * @access: Private (Admin)
   */
- const deleteTask = async (req, res) => {
+ export const deleteTask = async (req, res) => {
     try {
         
     } catch (error) {
@@ -65,7 +65,7 @@ import Task from '../models/Task.js';
   * @route: PUT /api/tasks/:id/status
   * @access: Private
   */
- const updateTaskStatus = async (req, res) => {
+ export const updateTaskStatus = async (req, res) => {
     try {
         
     } catch (error) {
@@ -77,7 +77,7 @@ import Task from '../models/Task.js';
   * @route: PUT /api/tasks/:id/todo
   * @access: Private
   */
- const updateTaskChecklist = async (req, res) => {
+ export const updateTaskChecklist = async (req, res) => {
     try {
         
     } catch (error) {
@@ -89,7 +89,7 @@ import Task from '../models/Task.js';
   * @route: GET /api/tasks/dashboard-data
   * @access: Private
   */
- const getDashboardData = async (req, res) => {
+ export const getDashboardData = async (req, res) => {
     try {
         
     } catch (error) {
@@ -101,7 +101,7 @@ import Task from '../models/Task.js';
   * @route: GET /api/tasks/employee-dashboard-data
   * @access: Private
   */
- const getEmployeeDashboardData = async (req, res) => {
+ export const getEmployeeDashboardData = async (req, res) => {
     try {
         
     } catch (error) {
@@ -109,7 +109,4 @@ import Task from '../models/Task.js';
     }
  }
 
- const time = { getTasks, getDashboardData, getEmployeeDashboardData, getTaskById, createTask, updateTask, deleteTask, updateTaskStatus, updateTaskChecklist};
-
- export default time;
 
