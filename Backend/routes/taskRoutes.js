@@ -19,7 +19,7 @@ router.get("/:id", protect, getTaskById);
 /* Create a task (Admin only) */
 router.post("/", protect, adminOnly, createTask);
 /* update task datails */
-router.post("/:id", protect, updateTask); 
+router.put("/:id", protect, updateTask); 
 /* Delete a task (Admin only) */
 router.delete("/:id", protect, adminOnly, deleteTask); 
 /* Update task status */
