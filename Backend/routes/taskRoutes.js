@@ -11,7 +11,7 @@ const router = express.Router();
  */ 
 
 router.get("/dashboard-data", protect, getDashboardData);
-router.get("/user-dashboard-data", protect, getEmployeeDashboardData);
+router.get("/employee-dashboard-data", protect, getEmployeeDashboardData);
 /* Get all tasks (Admin: all, Employee: assigned) */ 
 router.get("/", protect, getTasks); 
 /* Get task by ID */
