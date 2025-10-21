@@ -258,7 +258,7 @@ import Task from '../models/Task.js';
          * Ensure all possible statuses are included
          */
         const taskStatuses = ["Pending", "In Progress", "Completed"];
-        const taskDistrubutionRaw = await Task.aggregate([
+        const taskDistributionRaw = await Task.aggregate([
             {
                 $group:{
                     _id: "$status",
@@ -269,7 +269,7 @@ import Task from '../models/Task.js';
         const taskDistribution = taskStatuses.reduce((acc, status) => {
             const formattedKey = status.replace(/\s+/g, "");
             acc[formattedKey] =
-            taskDistribution.find((item) => item._id === status)?.count || 0;
+            taskDistributionRaw.find((item) => item._id === status)?.count || 0;
             return acc;
         }, {});
         taskDistribution['All'] = totalTasks;
@@ -290,7 +290,11 @@ import Task from '../models/Task.js';
         }, {});
 
         /** Fetch recent 10 tasks */
-        const recentTasks = (await Task.find()).toSorted({ createdAt: -1}).limit(10).select("title status priority dueDate createdAt");
+        const recentTasks = await Task.find()
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .select("title status priority dueDate createdAt");
+
         res.status(200).json({ statistics: {
             totalTasks,
             pendingTasks,
@@ -316,6 +320,62 @@ import Task from '../models/Task.js';
   */
  export const getEmployeeDashboardData = async (req, res) => {
     try {
+        const employeeId = req.employee._id; // Only fetch data for the logged-in employee
+
+        // Fetch statistics for user-specific tasks
+        const totalTasks = await Task.countDocuments({ assignedTo: employeeId});
+        const pendingTasks = await Task.countDocuments({ assignedTo: employeeId, status: "Pending"});
+        const completedTasks = await Task.countDocuments({ assignedTo: employeeId, status: "Completed"});
+        const overdueTasks = await Task.countDocuments({
+            assignedTo: employeeId,
+            status: { $ne: "Completed"},
+            dueDate: { $lt: new Date()},
+        });
+
+        // Task distribution by status
+        const taskStatuses = ["Pending", "In Progress", "Completed"];
+        const taskDistributionRaw = await Task.aggregate([
+            { $match: { assignedTo: employeeId}},
+            {$group: {_id: "$status", count: { $sum: 1}}},
+        ]);
+
+        const taskDistribution = taskStatuses.reduce((acc, status) => {
+            const formattedKey = status.replace(/\s+/g, "");
+            acc[formattedKey] = taskDistributionRaw.find((item) => item._id === status)?.count || 0;
+            return acc;
+        }, {});
+        taskDistribution["All"] = totalTasks;
+
+        /** Task distribution by priority */
+        const taskPriorities = ["Low", "Medium", "High"];
+        const taskPriorityLevelsRaw = await Task.aggregate([
+           { $match: { assignedTo: employeeId}},
+           { $group: {_id: "$priority", count: { $sum: 1}}}, 
+        ]);
+
+        const taskPriorityLevels = taskPriorities.reduce((acc, priority) => {
+            acc[priority] = taskPriorityLevelsRaw.find((item) => item._id === priority)?.count || 0;
+            return acc;
+        }, {});
+        /** Fetch recent 10 tasks for the logged-in employee */
+        const recentTasks = await Task.find({ assignedTo: employeeId})
+        .sort({createdAt: -1}).limit(10).select("title status priority dueDate createdAt");
+
+        res.status(200).json({
+            statistics:{
+                totalTasks,
+                pendingTasks,
+                completedTasks,
+                overdueTasks,
+            },
+            charts: {
+                taskDistribution,
+                taskPriorityLevels,
+
+            },
+            recentTasks,
+        });
+
         
     } catch (error) {
         res.status(500).json({message: "Server Error", error: error.message});
