@@ -14,5 +14,5 @@ export const useEmployeeAuth = () => {
       clearEmployee();
       navigate("/login");
     }
-  }, [user, loading, clearEmployee, navigate]);
+  }, [employee, loading, clearEmployee, navigate]);
 };
