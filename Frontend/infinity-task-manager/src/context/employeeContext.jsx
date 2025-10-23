@@ -21,7 +21,7 @@ const EmployeeProvider = ({ children }) => {
     const fetchEmployee = async () => {
       try {
         const response = await axiosInstance.get(API_PATHS.AUTH.GET_PROFILE);
-        setUser(response.data);
+        setEmployee(response.data);
       } catch (error) {
         console.error("Employee not authenticated", error);
         clearEmployee();
