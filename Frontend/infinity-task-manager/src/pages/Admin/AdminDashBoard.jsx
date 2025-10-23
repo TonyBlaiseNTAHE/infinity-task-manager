@@ -1,11 +1,9 @@
-import React from 'react'
+import React from "react";
+import { useEmployeeAuth } from "../../hooks/useEmployeeAuth";
 
 const AdminDashBoard = () => {
-  return (
-    <div>
-      Dashboard-admin
-    </div>
-  )
-}
+  useEmployeeAuth();
+  return <div>Dashboard-admin</div>;
+};
 
-export default AdminDashBoard
+export default AdminDashBoard;

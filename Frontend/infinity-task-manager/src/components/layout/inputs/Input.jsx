@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
 const Input = ({ value, onChange, label, placeholder, type }) => {
@@ -10,12 +9,16 @@ const Input = ({ value, onChange, label, placeholder, type }) => {
   };
   return (
     <div>
-      <label className='text-[13px] text-state-800'>{label || "Email Address"}</label>
-      <div className='input-box'>
-        <input 
-          type={type === "password" ? (showPassword ? "text" : "password") : type}
+      <label className="text-[13px] text-state-800">
+        {label || "Email Address"}
+      </label>
+      <div className="input-box">
+        <input
+          type={
+            type === "password" ? (showPassword ? "text" : "password") : type
+          }
           placeholder={placeholder}
-          className='w-full bg-transparent outline-none'
+          className="w-full bg-transparent outline-none"
           value={value}
           onChange={onChange}
         />
@@ -24,7 +27,7 @@ const Input = ({ value, onChange, label, placeholder, type }) => {
             {showPassword ? (
               <FaRegEye
                 size={22}
-                className='text-primary cursor-pointer'
+                className="text-primary cursor-pointer"
                 onClick={toggleShowPassword}
               />
             ) : (
@@ -39,6 +42,6 @@ const Input = ({ value, onChange, label, placeholder, type }) => {
       </div>
     </div>
   );
-}
+};
 
 export default Input;

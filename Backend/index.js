@@ -29,6 +29,8 @@ connectDB();
 //Middleware
 app.use(express.json());
 
+// Serve uploads folder statically
+app.use('/uploads', express.static('uploads'));
 
 
 // Routes
