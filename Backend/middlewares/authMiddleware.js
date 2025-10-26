@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import Employee from '../models/Employee.js';
 
-// Middleware to project routes
- export const protect = async (req, resizeBy, next) => {
+// Middleware to protect routes
+ export const protect = async (req, res, next) => {
     try {
         let token = req.headers.authorization;
 
@@ -12,10 +12,10 @@ import Employee from '../models/Employee.js';
             req.employee =  await Employee.findById(decoded.id).select("-password");
             next();
         } else {
-            res.status(401).json({ message: "Not authorized, no token"});
+            return res.status(401).json({ message: "Not authorized, no token"});
         }
     } catch (error){
-        res.status(401).json({ message: "Token failed", error: error.message});
+        return res.status(401).json({ message: "Token failed", error: error.message});
     }
 };
 
