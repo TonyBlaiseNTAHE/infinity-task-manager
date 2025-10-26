@@ -22,7 +22,9 @@ const SelectUsers = ({ selectedUsers = [], setSelectedUsers }) => {
 
   const toggleUserSelection = (userId) => {
     setTempSelectedUsers((prev) =>
-      prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId]
+      prev.includes(userId)
+        ? prev.filter((id) => id !== userId)
+        : [...prev, userId]
     );
   };
 
@@ -100,7 +102,11 @@ const SelectUsers = ({ selectedUsers = [], setSelectedUsers }) => {
               >
                 Cancel
               </button>
-              <button type="button" className="btn-primary" onClick={handleAssign}>
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={handleAssign}
+              >
                 Assign
               </button>
             </div>
